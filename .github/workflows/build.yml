@@ -33,11 +33,27 @@ jobs:
       - name: Package extension (if script exists)
         run: npm run zip --if-present
 
-      - name: Upload zip artifact
+      - name: Locate package files
+        id: packages
+        shell: bash
+        run: |
+          mapfile -t files < <(find .output -type f \( -name "*.zip" -o -name "*.xpi" \))
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No package files found under .output"
+            find .output -maxdepth 5 -type f || true
+            exit 1
+          fi
+          {
+            echo "files<<EOF"
+            printf '%s\n' "${files[@]}"
+            echo "EOF"
+          } >> "${GITHUB_OUTPUT}"
+
+      - name: Upload package artifact
         uses: actions/upload-artifact@v4
         with:
           name: ai-reader-extension-zip
-          path: .output/**/*.zip
+          path: ${{ steps.packages.outputs.files }}
           if-no-files-found: error
 
       - name: Generate release tag
@@ -52,5 +68,5 @@ jobs:
           tag_name: ${{ steps.tag.outputs.tag }}
           name: ${{ steps.tag.outputs.tag }}
           target_commitish: ${{ github.sha }}
-          files: .output/**/*.zip
+          files: ${{ steps.packages.outputs.files }}
           generate_release_notes: true
