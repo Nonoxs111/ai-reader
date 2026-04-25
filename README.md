@@ -73,6 +73,16 @@ npm run dev
 ```text
 .output/chrome-mv3
 ```
+## 📥 手动安装
+
+1. 打开 [Releases](https://github.com/Nonoxs111/ai-reader/releases) 页面
+2. 下载最新的 `ai-reader.zip`
+3. 解压到你电脑上的任意文件夹
+4. 打开浏览器，地址栏输入 `edge://extensions`（Chrome 输入 `chrome://extensions`）
+5. 开启左下角 **"开发人员模式"**
+6. 点击 **"加载解压缩的扩展"**
+7. 选择刚才解压的文件夹
+8. 插件图标会出现在浏览器工具栏右上角，点击即可使用
 
 ## 项目结构（简要）
 
